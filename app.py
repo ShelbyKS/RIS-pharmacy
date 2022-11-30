@@ -5,7 +5,7 @@ from auth.route import blueprint_auth
 from blueprint_query.route import blueprint_query
 from blueprint_report.route import blueprint_report
 from basket.route import blueprint_order
-#from blueprint_edit.route import blueprint_edit
+from blueprint_edit.route import blueprint_edit
 from typing import List, Callable
 from access import login_required, group_required
 
@@ -17,7 +17,7 @@ app.register_blueprint(blueprint_auth, url_prefix='/auth')
 app.register_blueprint(blueprint_query, url_prefix='/zaproses')
 app.register_blueprint(blueprint_report, url_prefix='/reports')
 app.register_blueprint(blueprint_order, url_prefix='/order')
-#app.register_blueprint(blueprint_edit, url_prefix='/edit')
+app.register_blueprint(blueprint_edit, url_prefix='/edit')
 
 
 app.config['db_config'] = json.load(open('data_files/dbconfig.json'))
@@ -61,6 +61,6 @@ def add_blueprint_access_handler(app: Flask, blueprint_names: List[str], handler
 
 
 if __name__ == '__main__':
-    app = add_blueprint_access_handler(app, ['bp_report', 'bp_query'], group_required)
-    app = add_blueprint_access_handler(app, ['bp_report', 'bp_query'], login_required)
+    app = add_blueprint_access_handler(app, ['bp_report', 'bp_query', 'bp_order', 'bp_edit'], group_required)
+    app = add_blueprint_access_handler(app, ['bp_report', 'bp_query', 'bp_order', 'bp_edit'], login_required)
     app.run(host='127.0.0.1', port=5001)

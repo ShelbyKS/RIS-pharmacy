@@ -3,12 +3,14 @@ from flask import Blueprint, render_template, request, current_app, session, red
 from db_context_manager import DBConnection
 from db_work import select_dict, insert
 from sql_provider import SQLProvider
-from cache.wrapper import fetch_from_cache
+from cache.wrapper import fetch_from_cache, update_cache
 from datetime import datetime
 
 blueprint_order = Blueprint('bp_order', __name__, template_folder='templates', static_folder='static')
 provider = SQLProvider(os.path.join(os.path.dirname(__file__), 'sql'))
 
+
+items = 1
 
 @blueprint_order.route('/', methods=['GET','POST'])
 def order_index():
@@ -37,7 +39,8 @@ def add_to_basket(prod_id: str, items: dict):
     curr_basket = session.get('basket', {})
 
     if prod_id in curr_basket:
-        curr_basket[prod_id]['amount'] = curr_basket[prod_id]['amount'] + 1
+        if curr_basket[prod_id]['amount'] < item_description['med_amount']:
+            curr_basket[prod_id]['amount'] = curr_basket[prod_id]['amount'] + 1
     else:
         curr_basket[prod_id] = {
             'med_name': item_description['med_name'],
@@ -61,10 +64,16 @@ def clear_basket():
 def save_order():
     user_id = session.get('user_id')
     current_basket = session.get('basket', {})
+    cache_config = current_app.config['cache_config']
+    db_config = current_app.config['db_config']
+
     order_id = save_order_with_list(current_app.config['db_config'], user_id, current_basket)
     if order_id:
+        session.pop('basket', {})
+        sql = provider.get('all_items.sql')
+        cached_select_update = update_cache('all_items_cached', cache_config)(select_dict)  # явное задание декоратора
+        items = cached_select_update(db_config, sql)
 
-        session.pop('basket')
         return render_template('order_created.html', order_id=order_id)
     else:
         return 'Что-то пошло не так :('

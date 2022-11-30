@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+    <style type="text/css">
+          .named_list {
+              font-size:12pt;
+              color:green;
+              display:inline-block;
+              width: 300px;
+              text-align : left;
+              }
+      </style>
+</head>
+<body>
+<h2 align="center">Введите изменения в описание {{product['med_name']}}</h2>
+<center>
+  <form action="{{url_for('bp_edit.edit_product')}}" method="POST">
+    <label for="prod_price" class="named_list"> Цена продукта</label>
+    <input type="text" id="prod_price" name="prod_price">
+    <br><br>
+    <label for="prod_price" class="named_list"> В наличии</label>
+    <input type="text" id="prod_amount" name="prod_amount">
+    <br><br>
+    <input type="hidden" name="id_med" value="{{product['id_med']}}">
+    <input type="submit" name="action" value="Отправить"></input>
+  </form>
+</center>
+</body>
+</html>

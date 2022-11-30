@@ -11,15 +11,11 @@ provider = SQLProvider(os.path.join(os.path.dirname(__file__), 'sql'))
 
 
 @blueprint_query.route('/')
-@group_required
-@login_required
 def start_query():
     return render_template('menu_query.html')
 
 
 @blueprint_query.route('/query1', methods=['GET', 'POST'])
-@login_required
-@group_required
 def query_page1():
     if request.method == 'GET':
         return render_template('easy_request_1.html')
@@ -35,8 +31,6 @@ def query_page1():
 
 
 @blueprint_query.route('/query2', methods=['GET', 'POST'])
-@login_required
-@group_required
 def query_page2():
     if request.method == 'GET':
         return render_template('easy_request_2.html')
@@ -52,8 +46,6 @@ def query_page2():
 
 
 @blueprint_query.route('/query3', methods=['GET', 'POST'])
-@login_required
-@group_required
 def query_page3():
     if request.method == 'GET':
         return render_template('easy_request_3.html')
@@ -69,8 +61,6 @@ def query_page3():
 
 
 @blueprint_query.route('/query4', methods=['GET', 'POST'])
-@login_required
-@group_required
 def query_page4():
     if request.method == 'GET':
         return render_template('easy_request_4.html')
@@ -86,8 +76,6 @@ def query_page4():
 
 
 @blueprint_query.route('/query5', methods=['GET', 'POST'])
-@login_required
-@group_required
 def query_page5():
     if request.method == 'GET':
         return render_template('easy_request_5.html')
@@ -103,8 +91,6 @@ def query_page5():
 
 
 @blueprint_query.route('/query6', methods=['GET', 'POST'])
-@login_required
-@group_required
 def query_page6():
     if request.method == 'GET':
         return render_template('easy_request_6.html')

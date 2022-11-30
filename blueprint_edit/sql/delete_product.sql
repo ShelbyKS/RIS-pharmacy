@@ -1,0 +1,1 @@
+DELETE FROM in_stock_for_sale where id_med = '$prod_id'
